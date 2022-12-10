@@ -5,14 +5,20 @@ class Kindergarten(models.Model):
     Name = models.CharField(max_length=30)
     Address = models.CharField(max_length=30)
     WorkDaysInWeek = models.IntegerField()
-    ChildrenNumber = models.IntegerField()
     NominalSum = models.IntegerField()
+
+    @property
+    def ChildrenNumber(self):
+        return
 
 
 class KindergartenGroup(models.Model):
     KindergartenID = models.ForeignKey(Kindergarten, on_delete=models.CASCADE)
-    ChildrenNumber = models.IntegerField()
     Name = models.CharField(max_length=30)
+
+    @property
+    def ChildrenNumber(self):
+        return
 
 
 class Child(models.Model):
@@ -46,5 +52,8 @@ class Attendance(models.Model):
     MonthID = models.ForeignKey(Month, on_delete=models.CASCADE)
     ChildID = models.ForeignKey(Child, on_delete=models.CASCADE)
     DaysAttended = models.IntegerField()
-    FinalSum = models.IntegerField()
-    isPaid = models.BooleanField
+    isPaid = models.BooleanField(default=False)
+
+    @property
+    def FilalSum(self):
+        return
