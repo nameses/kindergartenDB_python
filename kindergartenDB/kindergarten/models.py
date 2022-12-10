@@ -44,7 +44,7 @@ class Month(models.Model):
 
 class Attendance(models.Model):
     MonthID = models.ForeignKey(Month, on_delete=models.CASCADE)
-    ChildID = models.ForeignKey(Month, on_delete=models.CASCADE)
+    ChildID = models.ForeignKey(Child, on_delete=models.CASCADE)
     DaysAttended = models.IntegerField()
     FinalSum = models.IntegerField()
     isPaid = models.BooleanField

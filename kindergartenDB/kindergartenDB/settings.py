@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-jt3v5dp7bjs^!zshanawptltu5t=52p8w^d4-@#-033-x12gzj'
+SECRET_KEY = 'django-insecure-*yg)52_vx4_tm%6ci00*lr597m1f_r^rftabk1i64pa+slzmuw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'kindergarten.apps.KindergartenConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
