@@ -18,7 +18,7 @@ def user_signup(request):
             if User.objects.filter(username=form_data['username']).exists():
                 return render(
                     request,
-                    'form.html', {
+                    'authorization/signup.html', {
                         'form': form,
                         'error': 'Username already used'
                     }
@@ -26,7 +26,7 @@ def user_signup(request):
             if form_data['password'] != form_data['password_confirm']:
                 return render(
                     request,
-                    'form.html',
+                    'authorization/signup.html',
                     {
                         'form': form,
                         'error': 'Passwords are not the same'
@@ -46,7 +46,7 @@ def user_signup(request):
 
         return render(
             request,
-            'form.html',
+            'authorization/signup.html',
             {
                 'form': form,
                 'error': 'Invalid form'
@@ -57,7 +57,7 @@ def user_signup(request):
 
     return render(
         request,
-        'form.html',
+        'authorization/signup.html',
         {
             'form': form
         }
