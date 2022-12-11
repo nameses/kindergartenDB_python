@@ -11,6 +11,9 @@ class Kindergarten(models.Model):
     def ChildrenNumber(self):
         return
 
+    def __str__(self):
+        return self.Name
+
 
 class KindergartenGroup(models.Model):
     KindergartenID = models.ForeignKey(Kindergarten, on_delete=models.CASCADE)
@@ -19,6 +22,9 @@ class KindergartenGroup(models.Model):
     @property
     def ChildrenNumber(self):
         return
+
+    def __str__(self):
+        return self.Name
 
 
 class Child(models.Model):
@@ -29,6 +35,9 @@ class Child(models.Model):
     Patronymic = models.CharField(max_length=30)
     Birthday = models.DateTimeField('birthday')
 
+    def __str__(self):
+        return f'{self.Surname} {self.Name} {self.Patronymic}'
+
 
 class Parent(models.Model):
     Surname = models.CharField(max_length=30)
@@ -37,15 +46,24 @@ class Parent(models.Model):
     Phone = models.CharField(max_length=13)
     Comments = models.CharField(max_length=60)
 
+    def __str__(self):
+        return f'{self.Surname} {self.Name} {self.Patronymic}'
+
 
 class Family(models.Model):
     ChildID = models.ForeignKey(Child, on_delete=models.CASCADE)
     ParentID = models.ForeignKey(Parent, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.ParentID.Surname
+
 
 class Month(models.Model):
     MonthAndYear = models.DateTimeField('monthAndYear')
     WorkDaysNumber = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.MonthAndYear.month}.{self.MonthAndYear.year}'
 
 
 class Attendance(models.Model):
@@ -57,3 +75,6 @@ class Attendance(models.Model):
     @property
     def FilalSum(self):
         return
+
+    def __str__(self):
+        return f'days:{self.DaysAttended}/{self.MonthID.WorkDaysNumber}'
