@@ -2,14 +2,14 @@
 {% block content %}
     <dev align="center">
 
-        <h2>{{ title }}</h2>
+        <h2>{% block form_name %}{% endblock %}</h2>
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
             {% if error %}
                 <div class="p-3 mb-2 bg-danger text-white">{{ error }}</div>
             {% endif %}
-            <button class="btn btn-lg btn-primary" type="submit">Sign Up</button>
+            <button class="btn btn-lg btn-primary" type="submit">{% block button_text %}{% endblock %}</button>
         </form>
     </dev>
 {% endblock %}
