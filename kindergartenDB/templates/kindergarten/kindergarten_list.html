@@ -14,6 +14,7 @@
                     <p class="d-block pb-3 mb-0 small lh-sm">Address: {{ kindergarten.address }}</p>
                     <p class="d-block pb-3 mb-0 small lh-sm">Work days in week: {{ kindergarten.work_day_in_week }}</p>
                     <p class="d-block pb-3 mb-0 small lh-sm">Month price: {{ kindergarten.month_price }}</p>
+                    <p class="d-block pb-3 mb-0 small lh-sm">Children count: {{ kindergarten.children_count }}</p>
                 </div>
                 <form action="/kindergarten/{{ kindergarten.id }}/delete" method="post">
                     {% csrf_token %}

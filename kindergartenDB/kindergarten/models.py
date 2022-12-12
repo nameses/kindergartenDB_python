@@ -10,7 +10,10 @@ class Kindergarten(models.Model):
 
     @property
     def children_count(self):
-        return
+        return sum((
+            kindergarten.children_count for kindergarten in
+            KindergartenGroup.objects.filter(kindergarten=self.id)
+        ))
 
     def __str__(self):
         return self.name
@@ -22,7 +25,7 @@ class KindergartenGroup(models.Model):
 
     @property
     def children_count(self):
-        return
+        return Child.objects.filter(group=self.id).count()
 
     def __str__(self):
         return self.name
@@ -43,7 +46,6 @@ class UserAdditionInfo(models.Model):
 class Child(models.Model):
     parent = models.ForeignKey(User, on_delete=models.CASCADE)
     group = models.ForeignKey(KindergartenGroup, on_delete=models.CASCADE)
-    kindergarten = models.ForeignKey(Kindergarten, on_delete=models.CASCADE)
     birthday = models.DateTimeField('birthday')
     surname = models.CharField(max_length=30)
     name = models.CharField(max_length=30)
