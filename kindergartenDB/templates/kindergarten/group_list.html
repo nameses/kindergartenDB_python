@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Groups list{% endblock %}
+
+{% block content %}
+    <a class="btn h-50 btn-dark" href="/group/add">Add</a>
+    {% for group in groups %}
+        <a class="d-flex text-muted pt-3" style="text-decoration: none;" href="/group/{{ group.id }}">
+
+
+            <div class="pb-3 mb-0 small lh-sm border-bottom w-100 d-flex justify-content-between">
+                <div class="">
+                    <strong class="text-gray-dark">{{ group }}</strong>
+                    <p class="d-block pb-3 mb-0 small lh-sm">Kindergarten Name: {{ group.kindergarten_name }}</p>
+                    <p class="d-block pb-3 mb-0 small lh-sm">Children count: {{ group.children_count }}</p>
+                </div>
+                <form action="/group/{{ group.id }}/delete" method="post">
+                    {% csrf_token %}
+
+                    <button type="submit" class="btn h-50 btn-dark">Delete</button>
+                </form>
+            </div>
+        </a>
+
+    {% endfor %}
+
+{% endblock %}

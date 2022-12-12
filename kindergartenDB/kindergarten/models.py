@@ -27,6 +27,10 @@ class KindergartenGroup(models.Model):
     def children_count(self):
         return Child.objects.filter(group=self.id).count()
 
+    @property
+    def kindergarten_name(self):
+        return self.kindergarten.name
+
     def __str__(self):
         return self.name
 
