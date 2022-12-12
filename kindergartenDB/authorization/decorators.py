@@ -17,3 +17,13 @@ def post_method_only(func):
         raise Http404()
 
     return wrapper
+
+
+def staff_only(func):
+    @authenticated_only
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_staff:
+            return func(request, *args, **kwargs)
+        return HttpResponseRedirect('/')
+
+    return wrapper
