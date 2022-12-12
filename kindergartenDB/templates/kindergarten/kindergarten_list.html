@@ -3,7 +3,7 @@
 {% block title %}Kindergarten list{% endblock %}
 
 {% block content %}
-
+    <a class="btn h-50 btn-dark" href="/kindergarten/add">Add</a>
     {% for kindergarten in kindergartens %}
         <a class="d-flex text-muted pt-3" style="text-decoration: none;" href="/kindergarten/{{ kindergarten.id }}">
 
@@ -15,7 +15,11 @@
                     <p class="d-block pb-3 mb-0 small lh-sm">Work days in week: {{ kindergarten.work_day_in_week }}</p>
                     <p class="d-block pb-3 mb-0 small lh-sm">Month price: {{ kindergarten.month_price }}</p>
                 </div>
-                <button type="button" class="btn h-50 btn-dark">delete</button>
+                <form action="/kindergarten/{{ kindergarten.id }}/delete" method="post">
+                    {% csrf_token %}
+
+                    <button type="submit" class="btn h-50 btn-dark">Delete</button>
+                </form>
             </div>
         </a>
 
