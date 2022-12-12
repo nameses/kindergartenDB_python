@@ -5,7 +5,7 @@ from django.shortcuts import render
 
 from .decorators import authenticated_only
 from .forms import SignUpForm, LoginForm
-from ..kindergarten.models import UserAdditionInfo
+from kindergarten.models import UserAdditionInfo
 
 
 def user_signup(request):

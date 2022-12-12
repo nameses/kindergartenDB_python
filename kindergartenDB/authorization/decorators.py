@@ -19,6 +19,15 @@ def post_method_only(func):
     return wrapper
 
 
+def delete_method_only(func):
+    def wrapper(request, *args, **kwargs):
+        if request.method == 'DELETE':
+            return func(request, *args, **kwargs)
+        raise Http404()
+
+    return wrapper
+
+
 def staff_only(func):
     @authenticated_only
     def wrapper(request, *args, **kwargs):

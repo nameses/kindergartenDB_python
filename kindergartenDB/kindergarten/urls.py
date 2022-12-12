@@ -4,4 +4,8 @@ from . import views
 
 urlpatterns = [
     path('', views.index),
+    path('kindergartens/', views.kindergarten_list),
+    # path('kindergarten/<int:kindergarten_id>'),
+    path('kindergarten/<int:kindergarten_id>/delete', views.delete_kindergarten),
+
 ]
