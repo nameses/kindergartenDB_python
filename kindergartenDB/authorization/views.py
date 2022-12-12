@@ -5,6 +5,7 @@ from django.shortcuts import render
 
 from .decorators import authenticated_only
 from .forms import SignUpForm, LoginForm
+from ..kindergarten.models import UserAdditionInfo
 
 
 def user_signup(request):
@@ -36,10 +37,17 @@ def user_signup(request):
 
             user = User.objects.create_user(
                 username=form_data['username'],
-                first_name=form_data['first_name'],
-                last_name=form_data['last_name'],
                 password=form_data['password'],
             )
+
+            UserAdditionInfo(
+                user=user,
+                surname=form_data['surname'],
+                name=form_data['name'],
+                patronymic=form_data['patronymic'],
+                phone=form_data['phone'],
+                comments=form_data['comments'],
+            ).save()
 
             login(request, user)
 
