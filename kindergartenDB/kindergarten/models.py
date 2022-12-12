@@ -1,80 +1,76 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
 class Kindergarten(models.Model):
-    Name = models.CharField(max_length=30)
-    Address = models.CharField(max_length=30)
-    WorkDaysInWeek = models.IntegerField()
-    NominalSum = models.IntegerField()
+    name = models.CharField(max_length=30)
+    address = models.CharField(max_length=30)
+    work_day_in_week = models.IntegerField()
+    month_price = models.IntegerField()
 
     @property
-    def ChildrenNumber(self):
+    def children_count(self):
         return
 
     def __str__(self):
-        return self.Name
+        return self.name
 
 
 class KindergartenGroup(models.Model):
-    KindergartenID = models.ForeignKey(Kindergarten, on_delete=models.CASCADE)
-    Name = models.CharField(max_length=30)
+    kindergarten = models.ForeignKey(Kindergarten, on_delete=models.CASCADE)
+    name = models.CharField(max_length=30)
 
     @property
-    def ChildrenNumber(self):
+    def children_count(self):
         return
 
     def __str__(self):
-        return self.Name
+        return self.name
+
+
+class UserAdditionInfo(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    surname = models.CharField(max_length=30)
+    name = models.CharField(max_length=30)
+    patronymic = models.CharField(max_length=30)
+    phone = models.CharField(max_length=13, default=None, blank=True)
+    comments = models.CharField(max_length=60, default=None, blank=True)
+
+    def __str__(self):
+        return f'{self.surname} {self.name} {self.patronymic}'
 
 
 class Child(models.Model):
-    GroupID = models.ForeignKey(KindergartenGroup, on_delete=models.CASCADE)
-    KindergartenID = models.ForeignKey(Kindergarten, on_delete=models.CASCADE)
-    Surname = models.CharField(max_length=30)
-    Name = models.CharField(max_length=30)
-    Patronymic = models.CharField(max_length=30)
-    Birthday = models.DateTimeField('birthday')
+    parent = models.ForeignKey(User, on_delete=models.CASCADE)
+    group = models.ForeignKey(KindergartenGroup, on_delete=models.CASCADE)
+    kindergarten = models.ForeignKey(Kindergarten, on_delete=models.CASCADE)
+    birthday = models.DateTimeField('birthday')
+    surname = models.CharField(max_length=30)
+    name = models.CharField(max_length=30)
+    patronymic = models.CharField(max_length=30)
 
     def __str__(self):
-        return f'{self.Surname} {self.Name} {self.Patronymic}'
-
-
-class Parent(models.Model):
-    Surname = models.CharField(max_length=30)
-    Name = models.CharField(max_length=30)
-    Patronymic = models.CharField(max_length=30)
-    Phone = models.CharField(max_length=13)
-    Comments = models.CharField(max_length=60)
-
-    def __str__(self):
-        return f'{self.Surname} {self.Name} {self.Patronymic}'
-
-
-class Family(models.Model):
-    ChildID = models.ForeignKey(Child, on_delete=models.CASCADE)
-    ParentID = models.ForeignKey(Parent, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.ParentID.Surname
+        return f'{self.surname} {self.name} {self.patronymic}'
 
 
 class Month(models.Model):
-    MonthAndYear = models.DateTimeField('monthAndYear')
-    WorkDaysNumber = models.IntegerField()
+    month = models.IntegerField()
+    year = models.IntegerField()
+    work_day_count = models.IntegerField()
 
     def __str__(self):
-        return f'{self.MonthAndYear.month}.{self.MonthAndYear.year}'
+        return f'{self.month}.{self.year}'
 
 
 class Attendance(models.Model):
-    MonthID = models.ForeignKey(Month, on_delete=models.CASCADE)
-    ChildID = models.ForeignKey(Child, on_delete=models.CASCADE)
-    DaysAttended = models.IntegerField()
-    isPaid = models.BooleanField(default=False)
+    month = models.ForeignKey(Month, on_delete=models.CASCADE)
+    child = models.ForeignKey(Child, on_delete=models.CASCADE)
+    days_attended = models.IntegerField()
+    is_paid = models.BooleanField(default=False)
 
     @property
-    def FilalSum(self):
+    def final_sum(self):
         return
 
     def __str__(self):
-        return f'days:{self.DaysAttended}/{self.MonthID.WorkDaysNumber}'
+        return f'days:{self.days_attended}/{self.month.work_day_number}'
