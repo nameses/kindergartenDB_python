@@ -11,6 +11,10 @@ def index(request):
     return render(request, 'kindergarten/index.html')
 
 
+def about(request):
+    return render(request, 'authorization/about.html')
+
+
 @decorators.staff_only
 def kindergarten_list(request):
     return render(
