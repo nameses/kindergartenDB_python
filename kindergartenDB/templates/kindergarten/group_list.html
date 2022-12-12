@@ -3,24 +3,30 @@
 {% block title %}Groups list{% endblock %}
 
 {% block content %}
-    <a class="btn h-50 btn-dark" href="/group/add">Add</a>
+    <div class="d-flex text-muted pb-3 pl-5 border-bottom bd-example">
+        <a class="btn btn-primary m-1" href="/group/add">Create new</a>
+        <a class="btn btn-secondary m-1" href="/groups/">Reload</a>
+
+    </div>
     {% for group in groups %}
-        <a class="d-flex text-muted pt-3" style="text-decoration: none;" href="/group/{{ group.id }}">
+        <div class="d-flex text-muted pt-3">
 
 
             <div class="pb-3 mb-0 small lh-sm border-bottom w-100 d-flex justify-content-between">
                 <div class="">
-                    <strong class="text-gray-dark">{{ group }}</strong>
-                    <p class="d-block pb-3 mb-0 small lh-sm">Kindergarten Name: {{ group.kindergarten_name }}</p>
-                    <p class="d-block pb-3 mb-0 small lh-sm">Children count: {{ group.children_count }}</p>
+                    <strong class="text-dark h4 d-block pb-3 mb-0">{{ group }}</strong>
+                    <p class="d-block pb-3 mb-0 lh-sm">Kindergarten Name: {{ group.kindergarten_name }}</p>
+                    <p class="d-block pb-3 mb-0 lh-sm">Children count: {{ group.children_count }}</p>
                 </div>
-                <form action="/group/{{ group.id }}/delete" method="post">
-                    {% csrf_token %}
-
-                    <button type="submit" class="btn h-50 btn-dark">Delete</button>
-                </form>
+                <div>
+                    <form action="/group/{{ group.id }}/delete" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger mt-3 mb-3">Delete</button>
+                    </form>
+                    <a class="btn btn-warning mt-3 mb-3 w-100" href="/group/{{ group.id }}">Edit</a>
+                </div>
             </div>
-        </a>
+        </div>
 
     {% endfor %}
 
