@@ -1,11 +1,35 @@
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
+from authorization.models import UserAdditionInfo
 from .decorators import authenticated_only
 from .forms import SignUpForm, LoginForm
-from kindergarten.models import UserAdditionInfo
+
+
+def profile(request, user_id=None):
+    if user_id is None:
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect('/signup/')
+
+        return render(
+            request,
+            'authorization/profile.html',
+            {
+                'user': (user := request.user),
+                'UAI': UserAdditionInfo.objects.get(user=user),
+            }
+        )
+
+    return render(
+        request,
+        'authorization/profile.html',
+        {
+            'user': (user := get_object_or_404(User, id=user_id)),
+            'UAI': UserAdditionInfo.objects.get(user=user),
+        }
+    )
 
 
 def user_signup(request):
