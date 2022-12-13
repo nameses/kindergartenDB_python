@@ -14,3 +14,6 @@ UserAdditionInfo(
     phone='phone',
     comments='comments'
 ).save()
+user.is_superuser = True
+user.is_staff = True
+user.save()
