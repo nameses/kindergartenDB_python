@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404
 
 from authorization import decorators
 from . import models
-from .forms import KindergartenForm, KindergartenGroupForm
+from .forms import KindergartenForm, KindergartenGroupForm, ChildForm
 from .models import Kindergarten, KindergartenGroup, Child
 
 
@@ -218,3 +218,37 @@ def parent_delete_child(request, child_id):
     if (child := get_object_or_404(Child, id=child_id)).parent == request.user:
         child.delete()
     return HttpResponseRedirect('/profile/')
+
+
+@decorators.authenticated_only
+def parent_add_child(request):
+    if request.method == 'POST':
+        form = ChildForm(request.POST)
+
+        if not form.is_valid():
+            return render(
+                request,
+                'kindergarten/child.html',
+                {
+                    'form': form,
+                    'error': 'Invalid form'
+                }
+            )
+
+        form_data = form.cleaned_data
+
+        child = Child(**form_data)
+        child.parent = request.user
+        child.save()
+
+        return HttpResponseRedirect('/profile/')
+
+    form = ChildForm()
+
+    return render(
+        request,
+        'kindergarten/child.html',
+        {
+            'form': form,
+        }
+    )

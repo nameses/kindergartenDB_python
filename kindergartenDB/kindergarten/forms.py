@@ -19,3 +19,14 @@ class ChildForm(forms.ModelForm):
     class Meta:
         model = models.Child
         fields = ['group', 'birthday', 'surname', 'name', 'patronymic']
+
+        widgets = {
+            'birthday': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'placeholder': 'Select a date',
+                       'type': 'date',
+                       'style': 'width:200px; display: inline'
+                       },
+            ),
+        }

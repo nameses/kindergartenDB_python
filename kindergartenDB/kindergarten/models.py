@@ -52,6 +52,10 @@ class Child(models.Model):
     def get_parent_name(self):
         return str(UserAdditionInfo.objects.get(user=self.parent))
 
+    @property
+    def birthday_str(self):
+        return f'{self.birthday.day}.{self.birthday.month}.{self.birthday.year}'
+
 
 class Month(models.Model):
     month = models.IntegerField()
