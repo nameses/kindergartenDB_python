@@ -13,3 +13,9 @@ class KindergartenGroupForm(forms.ModelForm):
     class Meta:
         model = models.KindergartenGroup
         fields = ['name', 'kindergarten']
+
+
+class ChildForm(forms.ModelForm):
+    class Meta:
+        model = models.Child
+        fields = ['group', 'birthday', 'surname', 'name', 'patronymic']

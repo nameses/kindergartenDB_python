@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+from authorization.models import UserAdditionInfo
+
 
 class Kindergarten(models.Model):
     name = models.CharField(max_length=30)
@@ -45,6 +47,10 @@ class Child(models.Model):
 
     def __str__(self):
         return f'{self.surname} {self.name} {self.patronymic}'
+
+    @property
+    def get_parent_name(self):
+        return str(UserAdditionInfo.objects.get(user=self.parent))
 
 
 class Month(models.Model):
