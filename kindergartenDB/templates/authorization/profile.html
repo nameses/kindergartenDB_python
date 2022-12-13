@@ -4,12 +4,31 @@
 
 {% block content %}
 
-    <div>
+    <div class="border-bottom">
         <strong class="text-dark h4 d-block pb-3 mb-0">{{ UAI }}</strong>
         <p class="d-block pb-3 mb-0 lh-sm">Phone: {{ UAI.phone }}</p>
         <p class="d-block pb-3 mb-0 lh-sm">Comments: {{ UAI.comments }}</p>
     </div>
+    {% for child in children %}
+        <div class="d-flex text-muted pt-3">
+            <div class="pb-3 mb-0 small lh-sm border-bottom w-100 d-flex justify-content-between">
+                <div>
+                    <strong class="text-dark h4 d-block pb-3 mb-0">{{ child }}</strong>
+                    <p class="d-block pb-3 mb-0 lh-sm">Birthday: {{ child.birthday }}</p>
+                </div>
+                {% if is_parent %}
+                    <div>
+                        <form action="/child/{{ child.id }}/delete" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger mt-3 mb-3">Delete</button>
+                        </form>
+                        <a class="btn btn-outline-secondary mt-3 mb-3 w-100" href="/child/{{ child.id }}">Edit</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
 
+    {% endfor %}
 
 
 {% endblock %}

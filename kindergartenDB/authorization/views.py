@@ -6,6 +6,7 @@ from django.shortcuts import render, get_object_or_404
 from authorization.models import UserAdditionInfo
 from .decorators import authenticated_only
 from .forms import SignUpForm, LoginForm
+from kindergarten.models import Child
 
 
 def profile(request, user_id=None):
@@ -19,6 +20,8 @@ def profile(request, user_id=None):
             {
                 'user': (user := request.user),
                 'UAI': UserAdditionInfo.objects.get(user=user),
+                'children': Child.objects.filter(parent=user),
+                'is_parent': True,
             }
         )
 
@@ -28,6 +31,8 @@ def profile(request, user_id=None):
         {
             'user': (user := get_object_or_404(User, id=user_id)),
             'UAI': UserAdditionInfo.objects.get(user=user),
+            'children': Child.objects.filter(parent=user),
+            'is_parent': False
         }
     )
 
