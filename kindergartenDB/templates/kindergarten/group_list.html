@@ -4,7 +4,9 @@
 
 {% block content %}
     <div class="d-flex text-muted pb-3 pl-5 border-bottom bd-example">
-        <a class="btn btn-primary m-1" href="/group/add">Create new</a>
+        {% if request.user.is_staff %}
+            <a class="btn btn-primary m-1" href="/group/add">Create new</a>
+        {% endif %}
         <a class="btn btn-secondary m-1" href="/groups/">Reload</a>
 
     </div>
@@ -18,13 +20,15 @@
                     <p class="d-block pb-3 mb-0 lh-sm">Kindergarten Name: {{ group.kindergarten_name }}</p>
                     <p class="d-block pb-3 mb-0 lh-sm">Children count: {{ group.children_count }}</p>
                 </div>
-                <div>
-                    <form action="/group/{{ group.id }}/delete" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-danger mt-3 mb-3">Delete</button>
-                    </form>
-                    <a class="btn btn-outline-secondary mt-3 mb-3 w-100" href="/group/{{ group.id }}">Edit</a>
-                </div>
+                {% if request.user.is_staff %}
+                    <div>
+                        <form action="/group/{{ group.id }}/delete" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger mt-3 mb-3">Delete</button>
+                        </form>
+                        <a class="btn btn-outline-secondary mt-3 mb-3 w-100" href="/group/{{ group.id }}">Edit</a>
+                    </div>
+                {% endif %}
             </div>
         </div>
 

@@ -15,7 +15,6 @@ def about(request):
     return render(request, 'authorization/about.html')
 
 
-@decorators.staff_only
 def kindergarten_list(request):
     return render(
         request,
@@ -106,7 +105,6 @@ def kindergarten_view(request, kindergarten_id):
     )
 
 
-@decorators.staff_only
 def group_list(request):
     return render(
         request,
