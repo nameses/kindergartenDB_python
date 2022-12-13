@@ -191,3 +191,22 @@ def group_view(request, group_id=None):
             'form': form
         }
     )
+
+
+def children_by_group_list(request, group_id):
+    return render(
+        request,
+        'kindergarten/children_by_group_list.html',
+        {
+            'children': models.Child.objects.filter(group=group_id),
+            'group': models.KindergartenGroup.objects.get(id=group_id)
+        }
+    )
+
+
+@decorators.post_method_only
+@decorators.staff_only
+def delete_child(request, group_id, child_id):
+    if (child := models.Child.objects.get(id=child_id)) is not None:
+        child.delete()
+    return HttpResponseRedirect('/group/' + str(group_id) + '/children')
