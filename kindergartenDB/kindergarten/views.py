@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 
@@ -13,6 +14,28 @@ def index(request):
 
 def about(request):
     return render(request, 'authorization/about.html')
+
+
+def profile(request, user_id=None):
+    if user_id is None:
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect('/signup/')
+
+        return render(
+            request,
+            'authorization/profile.html',
+            {
+                'user': request.user
+            }
+        )
+
+    return render(
+        request,
+        'authorization/profile.html',
+        {
+            'user': get_object_or_404(User, id=user_id)
+        }
+    )
 
 
 def kindergarten_list(request):
