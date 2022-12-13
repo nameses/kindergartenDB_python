@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from authorization import decorators
 from . import models
 from .forms import KindergartenForm, KindergartenGroupForm
-from .models import Kindergarten, KindergartenGroup
+from .models import Kindergarten, KindergartenGroup, Child
 
 
 def index(request):
@@ -210,3 +210,11 @@ def delete_child(request, group_id, child_id):
     if (child := models.Child.objects.get(id=child_id)) is not None:
         child.delete()
     return HttpResponseRedirect('/group/' + str(group_id) + '/children')
+
+
+@decorators.post_method_only
+@decorators.authenticated_only
+def parent_delete_child(request, child_id):
+    if (child := get_object_or_404(Child, id=child_id)).parent == request.user:
+        child.delete()
+    return HttpResponseRedirect('/profile/')

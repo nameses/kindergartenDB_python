@@ -6,6 +6,8 @@ urlpatterns = [
     path('', views.index),
     path('about/', views.about),
 
+    path('child/<int:child_id>/delete', views.parent_delete_child),
+
     path('kindergartens/', views.kindergarten_list),
     path('kindergarten/<int:kindergarten_id>', views.kindergarten_view),
     path('kindergarten/add', views.add_kindergarten),
