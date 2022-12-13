@@ -5,10 +5,8 @@
 {% block content %}
 
     {% if request.user.is_authenticated %}
-        {% if not request.user.is_staff %}
-            <h3>Lists</h3>
-            <p>Check out lists of kindergartens and groups and make choice where to add your child.</p>
-        {% endif %}
+        <h3>Lists</h3>
+        <p>Check out lists of kindergartens and groups and make choice where to add your child.</p>
         <a href="/kindergartens/" class="btn btn-outline-dark btn-sm">List kindergartens</a>
         <a href="/groups/" class="btn btn-outline-dark btn-sm">List groups</a>
 
