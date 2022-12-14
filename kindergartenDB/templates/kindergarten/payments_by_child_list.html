@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Children list{% endblock %}
+
+{% block content %}
+    <div class="border-bottom">
+        <strong class="text-dark h4 d-block pb-3 mb-0">{{ child }}</strong>
+        <p class="d-block pb-3 mb-0 lh-sm">Birthday: {{ child.birthday }}</p>
+        <p class="d-block pb-3 mb-0 lh-sm">Group: {{ child.group }}</p>
+    </div>
+    {% for payment in payments %}
+        <div class="d-flex text-muted pt-3">
+            <div class="pb-3 mb-0 small lh-sm border-bottom w-100 d-flex justify-content-between">
+                <div class="">
+                    <strong class="text-dark h4 d-block pb-3 mb-0">{{ payment.month }}</strong>
+                    <p class="d-block pb-3 mb-0 lh-sm">Days attended: {{ payment.days_attended }}</p>
+                </div>
+                <div>
+                    <form action="/payment/{{ payment.id }}/pay" method="post">
+                        {% csrf_token %}
+                        <button type="submit"{% if not payment.is_paid %} class="btn btn-outline-danger mt-3 mb-3"
+                               {% else %} class="btn btn-outline-secondary mt-3 mb-3" disabled{% endif %}>Pay
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
+
+{% endblock %}
