@@ -252,3 +252,43 @@ def parent_add_child(request):
             'form': form,
         }
     )
+
+@decorators.staff_only
+def child_view(request, child_id=None):
+    child = get_object_or_404(Child, id=child_id)
+
+    if request.method == 'POST':
+        form = ChildForm(request.POST)
+
+        if not form.is_valid():
+            return render(
+                request,
+                'kindergarten/child.html',
+                {
+                    'form': form,
+                    'error': 'Invalid form'
+                }
+            )
+
+        form_data = form.cleaned_data
+
+        # child.parent = form_data['parent']
+        child.group = form_data['group']
+        child.birthday = form_data['birthday']
+        child.surname = form_data['surname']
+        child.name = form_data['name']
+        child.patronymic = form_data['patronymic']
+
+        child.save()
+
+        return HttpResponseRedirect('/profile/')
+
+    form = ChildForm(instance=child)
+
+    return render(
+        request,
+        'kindergarten/child.html',
+        {
+            'form': form
+        }
+    )
