@@ -17,7 +17,8 @@
                 <div class="">
                     <strong class="text-dark h4 d-block pb-3 mb-0">{{ child }}</strong>
                     <p class="d-block pb-3 mb-0 lh-sm">Birthday: {{ child }}</p>
-                    <a class="d-block pb-3 mb-0 lh-sm" href="/profile/{{ child.parent.id }}">Parent: {{ child.get_parent_name }}: </a>
+                    <a class="d-block pb-3 mb-0 lh-sm"
+                       href="/profile/{{ child.parent.id }}">Parent: {{ child.get_parent_name }}: </a>
                 </div>
                 {% if request.user.is_staff %}
                     <div>
@@ -26,7 +27,7 @@
                             <button type="submit" class="btn btn-outline-danger mt-3 mb-3">Delete</button>
                         </form>
                         <a class="btn btn-outline-secondary mt-3 mb-3 w-100"
-                                {#href="/group/{{ group.id }}/children/add_payment"#}>Add payment</a>
+                           href="/child/{{ child.id }}/add_payment">Add payment</a>
                     </div>
                 {% endif %}
             </div>

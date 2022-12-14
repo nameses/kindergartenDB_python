@@ -3,8 +3,8 @@ from django.shortcuts import render, get_object_or_404
 
 from authorization import decorators
 from . import models
-from .forms import KindergartenForm, KindergartenGroupForm, ChildForm
-from .models import Kindergarten, KindergartenGroup, Child
+from .forms import KindergartenForm, KindergartenGroupForm, ChildForm, AttendanceForm
+from .models import Kindergarten, KindergartenGroup, Child, Attendance
 
 
 def index(request):
@@ -253,6 +253,7 @@ def parent_add_child(request):
         }
     )
 
+
 @decorators.staff_only
 def child_view(request, child_id=None):
     child = get_object_or_404(Child, id=child_id)
@@ -288,6 +289,44 @@ def child_view(request, child_id=None):
     return render(
         request,
         'kindergarten/child.html',
+        {
+            'form': form
+        }
+    )
+
+
+@decorators.staff_only
+def child_add_payment(request, child_id):
+    if request.method == 'POST':
+        form = AttendanceForm(request.POST)
+
+        if not form.is_valid():
+            return render(
+                request,
+                'kindergarten/add_payment.html',
+                {
+                    'form': form,
+                    'error': 'Invalid form'
+                }
+            )
+
+        form_data = form.cleaned_data
+
+        child = get_object_or_404(Child, id=child_id)
+
+        Attendance(
+            child=child,
+            month=form_data['month'],
+            days_attended=form_data['days_attended']
+        ).save()
+
+        return HttpResponseRedirect(f'/group/{child.group.id}/children/')
+
+    form = AttendanceForm()
+
+    return render(
+        request,
+        'kindergarten/add_payment.html',
         {
             'form': form
         }

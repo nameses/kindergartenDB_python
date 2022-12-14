@@ -22,7 +22,7 @@ class ChildForm(forms.ModelForm):
 
         widgets = {
             'birthday': forms.DateInput(
-                format=('%Y-%m-%d'),
+                format='%d-%m-%Y',
                 attrs={'class': 'form-control',
                        'placeholder': 'Select a date',
                        'type': 'date',
@@ -30,3 +30,9 @@ class ChildForm(forms.ModelForm):
                        },
             ),
         }
+
+
+class AttendanceForm(forms.ModelForm):
+    class Meta:
+        model = models.Attendance
+        fields = ['month', 'days_attended']
