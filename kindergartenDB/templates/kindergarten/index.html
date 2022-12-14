@@ -10,11 +10,14 @@
             <p>Check out lists of kindergartens and groups and make choice where to add your child.</p>
             <a href="/kindergartens/" class="btn btn-outline-dark btn-sm">List kindergartens</a>
             <a href="/groups/" class="btn btn-outline-dark btn-sm">List groups</a>
+            {% if request.user.is_staff %}
+                <a href="/months/" class="btn btn-outline-dark btn-sm">List months</a>
+            {% endif %}
         </div>
         <div class="border-bottom pb-3 mb-0 small lh-sm">
             <h3>Made choice?</h3>
             <p>Add your child.</p>
-            <a href="/child/add" class="btn btn-outline-dark btn-sm">Add child to kindergarten</a>
+            <a href="/child/add/" class="btn btn-outline-dark btn-sm">Add child to kindergarten</a>
         </div>
     {% endif %}
 

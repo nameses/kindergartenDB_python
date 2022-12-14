@@ -19,12 +19,12 @@
                 </div>
                 {% if is_parent %}
                     <div>
-                        <form action="/child/{{ child.id }}/delete" method="post">
+                        <form action="/child/{{ child.id }}/delete/" method="post">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-outline-danger mt-3 mb-3">Delete</button>
                         </form>
-                        <a class="btn btn-outline-secondary mt-3 mb-3 w-100" href="/child/{{ child.id }}/payments">View</a>
-                        <a class="btn btn-outline-secondary mt-3 mb-3 w-100" href="/child/{{ child.id }}">Edit</a>
+                        <a class="btn btn-outline-secondary mt-3 mb-3 w-100" href="/child/{{ child.id }}/payments/">View</a>
+                        <a class="btn btn-outline-secondary mt-3 mb-3 w-100" href="/child/{{ child.id }}/">Edit</a>
                     </div>
                 {% endif %}
             </div>

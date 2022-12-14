@@ -5,7 +5,7 @@
 {% block content %}
     <div class="d-flex text-muted pb-3 pl-5 border-bottom bd-example">
         {% if request.user.is_staff %}
-            <a class="btn btn-primary m-1" href="/kindergarten/add">Create new</a>
+            <a class="btn btn-primary m-1" href="/kindergarten/add/">Create new</a>
         {% endif %}
         <a class="btn btn-secondary m-1" href="/kindergartens/">Reload</a>
 
@@ -24,11 +24,11 @@
                 </div>
                 {% if request.user.is_staff %}
                     <div>
-                        <form action="/kindergarten/{{ kindergarten.id }}/delete" method="post">
+                        <form action="/kindergarten/{{ kindergarten.id }}/delete/" method="post">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-outline-danger mt-3 mb-3">Delete</button>
                         </form>
-                        <a class="btn btn-outline-secondary mt-3 mb-3 w-100" href="/kindergarten/{{ kindergarten.id }}">Edit</a>
+                        <a class="btn btn-outline-secondary mt-3 mb-3 w-100" href="/kindergarten/{{ kindergarten.id }}/">Edit</a>
 
                     </div>
                 {% endif %}

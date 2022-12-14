@@ -436,6 +436,7 @@ def child_add_payment(request, child_id):
         }
     )
 
+
 @decorators.post_method_only
 @decorators.authenticated_only
 def child_pay(request, payment_id):
@@ -446,4 +447,3 @@ def child_pay(request, payment_id):
         return HttpResponseRedirect(f'/child/{payment.child.id}/payments')
     else:
         return HttpResponseRedirect('/profile/')
-

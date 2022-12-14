@@ -6,7 +6,7 @@
     <div class="border-bottom">
         <div class="d-flex text-muted pb-3 pl-5 bd-example">
             {% if request.user.is_staff %}
-                <a class="btn btn-primary m-1" href="/group/add">Create new</a>
+                <a class="btn btn-primary m-1" href="/group/add/">Create new</a>
             {% endif %}
             <a class="btn btn-secondary m-1" href="/groups/">Reload</a>
         </div>
@@ -17,18 +17,18 @@
 
 
             <div class="pb-3 mb-0 small lh-sm border-bottom w-100 d-flex justify-content-between">
-                <a href="/group/{{ group.id }}/children" style="text-decoration: none; color:black">
+                <a href="/group/{{ group.id }}/children/" style="text-decoration: none; color:black">
                     <strong class="text-dark h4 d-block pb-3 mb-0">{{ group }}</strong>
                     <p class="d-block pb-3 mb-0 lh-sm">Kindergarten Name: {{ group.kindergarten_name }}</p>
                     <p class="d-block pb-3 mb-0 lh-sm">Children count: {{ group.children_count }}</p>
                 </a>
                 {% if request.user.is_staff %}
                     <div>
-                        <form action="/group/{{ group.id }}/delete" method="post">
+                        <form action="/group/{{ group.id }}/delete/" method="post">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-outline-danger mt-3 mb-3">Delete</button>
                         </form>
-                        <a class="btn btn-outline-secondary mt-3 mb-3 w-100" href="/group/{{ group.id }}">Edit</a>
+                        <a class="btn btn-outline-secondary mt-3 mb-3 w-100" href="/group/{{ group.id }}/">Edit</a>
                     </div>
                 {% endif %}
             </div>
