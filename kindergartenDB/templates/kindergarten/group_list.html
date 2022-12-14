@@ -3,12 +3,14 @@
 {% block title %}Groups list{% endblock %}
 
 {% block content %}
-    <div class="d-flex text-muted pb-3 pl-5 border-bottom bd-example">
-        {% if request.user.is_staff %}
-            <a class="btn btn-primary m-1" href="/group/add">Create new</a>
-        {% endif %}
-        <a class="btn btn-secondary m-1" href="/groups/">Reload</a>
-
+    <div class="border-bottom">
+        <div class="d-flex text-muted pb-3 pl-5 bd-example">
+            {% if request.user.is_staff %}
+                <a class="btn btn-primary m-1" href="/group/add">Create new</a>
+            {% endif %}
+            <a class="btn btn-secondary m-1" href="/groups/">Reload</a>
+        </div>
+        <p>Click on group to view a list of children.</p>
     </div>
     {% for group in groups %}
         <div class="d-flex text-muted pt-3">
