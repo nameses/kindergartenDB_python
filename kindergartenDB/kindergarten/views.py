@@ -296,6 +296,19 @@ def child_view(request, child_id=None):
     )
 
 
+@decorators.authenticated_only
+def payments_by_child_list(request, child_id):
+    child = models.Child.objects.get(id=child_id)
+    return render(
+        request,
+        'kindergarten/payments_by_child_list.html',
+        {
+            'child': child,
+            'payments': models.Attendance.objects.filter(child=child)
+        }
+    )
+
+
 @decorators.staff_only
 def month_list(request):
     return render(
@@ -422,3 +435,15 @@ def child_add_payment(request, child_id):
             'form': form
         }
     )
+
+@decorators.post_method_only
+@decorators.authenticated_only
+def child_pay(request, payment_id):
+    payment = get_object_or_404(Attendance, id=payment_id)
+    if payment.child.parent == request.user:
+        payment.is_paid = 1
+        payment.save()
+        return HttpResponseRedirect(f'/child/{payment.child.id}/payments')
+    else:
+        return HttpResponseRedirect('/profile/')
+

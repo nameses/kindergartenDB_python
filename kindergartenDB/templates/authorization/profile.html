@@ -15,6 +15,7 @@
                 <div>
                     <strong class="text-dark h4 d-block pb-3 mb-0">{{ child }}</strong>
                     <p class="d-block pb-3 mb-0 lh-sm">Birthday: {{ child.birthday_str }}</p>
+                    <p class="d-block pb-3 mb-0 lh-sm">Group: {{ child.group }}</p>
                 </div>
                 {% if is_parent %}
                     <div>
@@ -22,6 +23,7 @@
                             {% csrf_token %}
                             <button type="submit" class="btn btn-outline-danger mt-3 mb-3">Delete</button>
                         </form>
+                        <a class="btn btn-outline-secondary mt-3 mb-3 w-100" href="/child/{{ child.id }}/payments">View</a>
                         <a class="btn btn-outline-secondary mt-3 mb-3 w-100" href="/child/{{ child.id }}">Edit</a>
                     </div>
                 {% endif %}
