@@ -3,8 +3,8 @@ from django.shortcuts import render, get_object_or_404
 
 from authorization import decorators
 from . import models
-from .forms import KindergartenForm, KindergartenGroupForm, ChildForm, AttendanceForm
-from .models import Kindergarten, KindergartenGroup, Child, Attendance
+from .forms import KindergartenForm, KindergartenGroupForm, ChildForm, AttendanceForm, MonthForm
+from .models import Kindergarten, KindergartenGroup, Child, Attendance, Month
 
 
 def index(request):
@@ -193,6 +193,7 @@ def group_view(request, group_id=None):
     )
 
 
+@decorators.staff_only
 def children_by_group_list(request, group_id):
     return render(
         request,
@@ -293,6 +294,96 @@ def child_view(request, child_id=None):
             'form': form
         }
     )
+
+
+@decorators.staff_only
+def month_list(request):
+    return render(
+        request,
+        'kindergarten/month_list.html',
+        {
+            'months': Month.objects.all()
+        }
+    )
+
+
+@decorators.staff_only
+def add_month(request):
+    if request.method == 'POST':
+        form = MonthForm(request.POST)
+
+        if not form.is_valid():
+            return render(
+                request,
+                'kindergarten/month.html',
+                {
+                    'form': form,
+                    'error': 'Invalid form'
+                }
+            )
+
+        form_data = form.cleaned_data
+
+        Month(**form_data).save()
+
+        return HttpResponseRedirect('/months/')
+
+    form = MonthForm()
+
+    return render(
+        request,
+        'kindergarten/month.html',
+        {
+            'form': form,
+        }
+    )
+
+
+@decorators.staff_only
+def month_view(request, month_id=None):
+    month = get_object_or_404(Month, id=month_id)
+
+    if request.method == 'POST':
+        form = MonthForm(request.POST)
+
+        if not form.is_valid():
+            return render(
+                request,
+                'kindergarten/month.html',
+                {
+                    'form': form,
+                    'error': 'Invalid form'
+                }
+            )
+
+        form_data = form.cleaned_data
+
+        month.month = form_data['month']
+        month.year = form_data['year']
+
+        month.work_day_count = form_data['work_day_count']
+
+        month.save()
+
+        return HttpResponseRedirect('/months/')
+
+    form = MonthForm(instance=month)
+
+    return render(
+        request,
+        'kindergarten/month.html',
+        {
+            'form': form
+        }
+    )
+
+
+@decorators.post_method_only
+@decorators.staff_only
+def delete_month(request, month_id):
+    month = get_object_or_404(Month, id=month_id)
+    month.delete()
+    return HttpResponseRedirect('/months/')
 
 
 @decorators.staff_only

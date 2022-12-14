@@ -2,6 +2,10 @@ from django.urls import path
 
 from . import views
 
+
+
+
+
 urlpatterns = [
     path('', views.index),
     path('about/', views.about),
@@ -23,4 +27,10 @@ urlpatterns = [
 
     path('group/<int:group_id>/children', views.children_by_group_list),
     path('group/<int:group_id>/children/<int:child_id>/delete', views.delete_child),
+
+    path('months/', views.month_list),
+    path('month/add', views.add_month),
+    path('month/<int:month_id>', views.month_view),
+    path('month/<int:month_id>/delete', views.delete_month),
+
 ]

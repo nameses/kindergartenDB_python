@@ -36,3 +36,9 @@ class AttendanceForm(forms.ModelForm):
     class Meta:
         model = models.Attendance
         fields = ['month', 'days_attended']
+
+
+class MonthForm(forms.ModelForm):
+    class Meta:
+        model = models.Month
+        fields = ['month', 'year', 'work_day_count']
