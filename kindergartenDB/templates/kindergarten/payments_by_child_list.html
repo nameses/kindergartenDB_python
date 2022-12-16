@@ -14,7 +14,7 @@
                 <div class="">
                     <strong class="text-dark h4 d-block pb-3 mb-0">{{ payment.month }}</strong>
                     <p class="d-block pb-3 mb-0 lh-sm">Days attended: {{ payment.days_attended }}</p>
-                    <p class="d-block pb-3 mb-0 lh-sm">Final Sum: {{ payment.final_sum }}</p>
+                    <p class="d-block pb-3 mb-0 lh-sm">Final Sum: {{ payment.final_sum|stringformat:".2f" }}</p>
                 </div>
                 <div>
                     {% if not payment.is_paid %}

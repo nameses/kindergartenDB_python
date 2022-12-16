@@ -16,6 +16,7 @@ urlpatterns = [
 
     path('kindergartens/', views.kindergarten_list),
     path('kindergarten/<int:kindergarten_id>/', views.kindergarten_view),
+    path('kindergarten/<int:kindergarten_id>/view', views.kindergarten_list_payments),
     path('kindergarten/add/', views.add_kindergarten),
     path('kindergarten/<int:kindergarten_id>/delete/', views.delete_kindergarten),
 

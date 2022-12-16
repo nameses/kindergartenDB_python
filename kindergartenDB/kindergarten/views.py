@@ -105,6 +105,11 @@ def kindergarten_view(request, kindergarten_id):
     )
 
 
+@decorators.staff_only
+def kindergarten_list_payments(request):
+    pass
+
+
 def group_list(request):
     return render(
         request,
