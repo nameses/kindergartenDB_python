@@ -74,7 +74,7 @@ class Attendance(models.Model):
 
     @property
     def final_sum(self):
-        return
+        return self.child.group.kindergarten.month_price * self.days_attended / self.month.work_day_count
 
     def __str__(self):
         return f'days:{self.days_attended}/{self.month.work_day_count}'
