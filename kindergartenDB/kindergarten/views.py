@@ -130,8 +130,7 @@ def group_list(request):
 @decorators.post_method_only
 @decorators.staff_only
 def delete_group(request, group_id):
-    if (kindergarten := models.KindergartenGroup.objects.get(id=group_id)) is not None:
-        kindergarten.delete()
+    get_object_or_404(models.KindergartenGroup, id=group_id).delete()
 
     return HttpResponseRedirect('/groups/')
 
@@ -220,9 +219,8 @@ def children_by_group_list(request, group_id):
 @decorators.post_method_only
 @decorators.staff_only
 def delete_child(request, group_id, child_id):
-    if (child := models.Child.objects.get(id=child_id)) is not None:
-        child.delete()
-    return HttpResponseRedirect('/group/' + str(group_id) + '/children')
+    get_object_or_404(models.Child, id=child_id).delete()
+    return HttpResponseRedirect(f'/group/{group_id}/children')
 
 
 @decorators.post_method_only
@@ -268,7 +266,7 @@ def parent_add_child(request):
 
 
 @decorators.staff_only
-def child_view(request, child_id=None):
+def child_view(request, child_id):
     child = get_object_or_404(models.Child, id=child_id)
 
     if request.method == 'POST':
