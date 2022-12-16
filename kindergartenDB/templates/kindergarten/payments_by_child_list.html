@@ -17,12 +17,16 @@
                     <p class="d-block pb-3 mb-0 lh-sm">Final Sum: {{ payment.final_sum }}</p>
                 </div>
                 <div>
-                    <form action="/payment/{{ payment.id }}/pay/" method="post">
-                        {% csrf_token %}
-                        <button type="submit"{% if not payment.is_paid %} class="btn btn-outline-danger mt-3 mb-3"
-                               {% else %} class="btn btn-outline-secondary mt-3 mb-3" disabled{% endif %}>Pay
+                    {% if not payment.is_paid %}
+                        <form action="/payment/{{ payment.id }}/pay/" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger mt-3 mb-3">Pay
+                            </button>
+                        </form>
+                    {% else %}
+                        <button class="btn btn-outline-secondary mt-3 mb-3" disabled>Paid
                         </button>
-                    </form>
+                    {% endif %}
                 </div>
             </div>
         </div>
