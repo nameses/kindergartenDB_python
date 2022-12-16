@@ -47,13 +47,13 @@ class Kindergarten(models.Model):
                     attendance.final_sum
                     for group in KindergartenGroup.objects.filter(kindergarten=self)
                     for child in Child.objects.filter(group=group)
-                    for attendance in Attendance.objects.filter(child=child, is_paid=True)
+                    for attendance in Attendance.objects.filter(child=child, month=month, is_paid=True)
                 )),
                 sum((
                     attendance.final_sum
                     for group in KindergartenGroup.objects.filter(kindergarten=self)
                     for child in Child.objects.filter(group=group)
-                    for attendance in Attendance.objects.filter(child=child, is_paid=False)
+                    for attendance in Attendance.objects.filter(child=child, month=month, is_paid=False)
                 )),
             )
             for month in Month.objects.all()
