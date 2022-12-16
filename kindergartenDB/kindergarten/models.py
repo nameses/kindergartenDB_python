@@ -1,7 +1,25 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from authorization.models import UserAdditionInfo
+
+class UserAdditionInfo(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    surname = models.CharField(max_length=30)
+    name = models.CharField(max_length=30)
+    patronymic = models.CharField(max_length=30)
+    phone = models.CharField(max_length=13, default=None, blank=True)
+    comments = models.CharField(max_length=60, default=None, blank=True)
+
+    def __str__(self):
+        return f'{self.surname} {self.name} {self.patronymic}'
+
+    @property
+    def sum_to_pay(self):
+        return sum((
+            attendance.final_sum
+            for child in Child.objects.filter(parent=self.user)
+            for attendance in Attendance.objects.filter(child=child, is_paid=False)
+        ))
 
 
 class Kindergarten(models.Model):

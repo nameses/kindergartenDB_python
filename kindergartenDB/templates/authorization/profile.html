@@ -8,6 +8,9 @@
         <strong class="text-dark h4 d-block pb-3 mb-0">{{ UAI }}</strong>
         <p class="d-block pb-3 mb-0 lh-sm">Phone: {{ UAI.phone }}</p>
         <p class="d-block pb-3 mb-0 lh-sm">Comments: {{ UAI.comments }}</p>
+    {% if request.user.is_staff %}
+        <p class="d-block pb-3 mb-0 lh-sm">Held payment: {{ UAI.sum_to_pay }}</p>
+    {% endif %}
     </div>
     {% for child in children %}
         <div class="d-flex text-muted pt-3">
