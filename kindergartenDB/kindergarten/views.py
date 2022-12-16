@@ -440,6 +440,26 @@ def child_add_payment(request, child_id):
 
         child = get_object_or_404(Child, id=child_id)
 
+        if Attendance.objects.filter(child=child, month=form_data['month']).exists():
+            return render(
+                request,
+                'kindergarten/add_payment.html',
+                {
+                    'form': form,
+                    'error': 'Attendance to this month already exists'
+                }
+            )
+
+        if form_data['month'].work_day_count < form_data['days_attended']:
+            return render(
+                request,
+                'kindergarten/add_payment.html',
+                {
+                    'form': form,
+                    'error': 'Attended days more than work day count'
+                }
+            )
+
         Attendance(
             child=child,
             month=form_data['month'],
