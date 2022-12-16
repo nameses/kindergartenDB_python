@@ -2,26 +2,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 
 from authorization import decorators
-from . import models
-from .forms import KindergartenForm, KindergartenGroupForm, ChildForm, AttendanceForm, MonthForm
-
-
-def index(request):
-    return render(request, 'kindergarten/index.html')
-
-
-def about(request):
-    return render(request, 'authorization/about.html')
-
-
-def kindergarten_list(request):
-    return render(
-        request,
-        'kindergarten/kindergarten_list.html',
-        {
-            'kindergartens': models.Kindergarten.objects.all()
-        }
-    )
+from .. import forms
+from .. import models
 
 
 @decorators.post_method_only
@@ -36,7 +18,7 @@ def delete_kindergarten(request, kindergarten_id):
 @decorators.staff_only
 def add_kindergarten(request):
     if request.method == 'POST':
-        form = KindergartenForm(request.POST)
+        form = forms.KindergartenForm(request.POST)
 
         if not form.is_valid():
             return render(
@@ -54,7 +36,7 @@ def add_kindergarten(request):
 
         return HttpResponseRedirect('/kindergartens/')
 
-    form = KindergartenForm()
+    form = forms.KindergartenForm()
 
     return render(
         request,
@@ -70,7 +52,7 @@ def kindergarten_view(request, kindergarten_id):
     kindergarten = get_object_or_404(models.Kindergarten, id=kindergarten_id)
 
     if request.method == 'POST':
-        form = KindergartenForm(request.POST)
+        form = forms.KindergartenForm(request.POST)
 
         if not form.is_valid():
             return render(
@@ -93,7 +75,7 @@ def kindergarten_view(request, kindergarten_id):
 
         return HttpResponseRedirect('/kindergartens/')
 
-    form = KindergartenForm(instance=kindergarten)
+    form = forms.KindergartenForm(instance=kindergarten)
 
     return render(
         request,
@@ -117,16 +99,6 @@ def kindergarten_list_payments(request, kindergarten_id):
     )
 
 
-def group_list(request):
-    return render(
-        request,
-        'kindergarten/group_list.html',
-        {
-            'groups': models.KindergartenGroup.objects.all()
-        }
-    )
-
-
 @decorators.post_method_only
 @decorators.staff_only
 def delete_group(request, group_id):
@@ -138,7 +110,7 @@ def delete_group(request, group_id):
 @decorators.staff_only
 def add_group(request):
     if request.method == 'POST':
-        form = KindergartenGroupForm(request.POST)
+        form = forms.KindergartenGroupForm(request.POST)
 
         if not form.is_valid():
             return render(
@@ -156,7 +128,7 @@ def add_group(request):
 
         return HttpResponseRedirect('/groups/')
 
-    form = KindergartenGroupForm()
+    form = forms.KindergartenGroupForm()
 
     return render(
         request,
@@ -172,7 +144,7 @@ def group_view(request, group_id=None):
     group = get_object_or_404(models.KindergartenGroup, id=group_id)
 
     if request.method == 'POST':
-        form = KindergartenGroupForm(request.POST)
+        form = forms.KindergartenGroupForm(request.POST)
 
         if not form.is_valid():
             return render(
@@ -193,7 +165,7 @@ def group_view(request, group_id=None):
 
         return HttpResponseRedirect('/groups/')
 
-    form = KindergartenGroupForm(instance=group)
+    form = forms.KindergartenGroupForm(instance=group)
 
     return render(
         request,
@@ -223,54 +195,12 @@ def delete_child(request, group_id, child_id):
     return HttpResponseRedirect(f'/group/{group_id}/children')
 
 
-@decorators.post_method_only
-@decorators.authenticated_only
-def parent_delete_child(request, child_id):
-    if (child := get_object_or_404(models.Child, id=child_id)).parent == request.user:
-        child.delete()
-    return HttpResponseRedirect('/profile/')
-
-
-@decorators.authenticated_only
-def parent_add_child(request):
-    if request.method == 'POST':
-        form = ChildForm(request.POST)
-
-        if not form.is_valid():
-            return render(
-                request,
-                'kindergarten/child.html',
-                {
-                    'form': form,
-                    'error': 'Invalid form'
-                }
-            )
-
-        form_data = form.cleaned_data
-
-        child = models.Child(**form_data)
-        child.parent = request.user
-        child.save()
-
-        return HttpResponseRedirect('/profile/')
-
-    form = ChildForm()
-
-    return render(
-        request,
-        'kindergarten/child.html',
-        {
-            'form': form,
-        }
-    )
-
-
 @decorators.staff_only
 def child_view(request, child_id):
     child = get_object_or_404(models.Child, id=child_id)
 
     if request.method == 'POST':
-        form = ChildForm(request.POST)
+        form = forms.ChildForm(request.POST)
 
         if not form.is_valid():
             return render(
@@ -295,26 +225,13 @@ def child_view(request, child_id):
 
         return HttpResponseRedirect('/profile/')
 
-    form = ChildForm(instance=child)
+    form = forms.ChildForm(instance=child)
 
     return render(
         request,
         'kindergarten/child.html',
         {
             'form': form
-        }
-    )
-
-
-@decorators.authenticated_only
-def payments_by_child_list(request, child_id):
-    child = models.Child.objects.get(id=child_id)
-    return render(
-        request,
-        'kindergarten/payments_by_child_list.html',
-        {
-            'child': child,
-            'payments': models.Attendance.objects.filter(child=child)
         }
     )
 
@@ -333,7 +250,7 @@ def month_list(request):
 @decorators.staff_only
 def add_month(request):
     if request.method == 'POST':
-        form = MonthForm(request.POST)
+        form = forms.MonthForm(request.POST)
 
         if not form.is_valid():
             return render(
@@ -360,7 +277,7 @@ def add_month(request):
         models.Month(**form_data).save()
         return HttpResponseRedirect('/months/')
 
-    form = MonthForm()
+    form = forms.MonthForm()
 
     return render(
         request,
@@ -376,7 +293,7 @@ def month_view(request, month_id=None):
     month = get_object_or_404(models.Month, id=month_id)
 
     if request.method == 'POST':
-        form = MonthForm(request.POST)
+        form = forms.MonthForm(request.POST)
 
         if not form.is_valid():
             return render(
@@ -399,7 +316,7 @@ def month_view(request, month_id=None):
 
         return HttpResponseRedirect('/months/')
 
-    form = MonthForm(instance=month)
+    form = forms.MonthForm(instance=month)
 
     return render(
         request,
@@ -421,7 +338,7 @@ def delete_month(request, month_id):
 @decorators.staff_only
 def child_add_payment(request, child_id):
     if request.method == 'POST':
-        form = AttendanceForm(request.POST)
+        form = forms.AttendanceForm(request.POST)
 
         if not form.is_valid():
             return render(
@@ -465,7 +382,7 @@ def child_add_payment(request, child_id):
 
         return HttpResponseRedirect(f'/group/{child.group.id}/children/')
 
-    form = AttendanceForm()
+    form = forms.AttendanceForm()
 
     return render(
         request,
@@ -474,15 +391,3 @@ def child_add_payment(request, child_id):
             'form': form
         }
     )
-
-
-@decorators.post_method_only
-@decorators.authenticated_only
-def child_pay(request, payment_id):
-    payment = get_object_or_404(models.Attendance, id=payment_id)
-    if payment.child.parent == request.user:
-        payment.is_paid = 1
-        payment.save()
-        return HttpResponseRedirect(f'/child/{payment.child.id}/payments')
-    else:
-        return HttpResponseRedirect('/profile/')
