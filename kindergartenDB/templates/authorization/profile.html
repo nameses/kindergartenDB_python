@@ -9,7 +9,7 @@
         <p class="d-block pb-3 mb-0 lh-sm">Phone: {{ UAI.phone }}</p>
         <p class="d-block pb-3 mb-0 lh-sm">Comments: {{ UAI.comments }}</p>
     {% if request.user.is_staff %}
-        <p class="d-block pb-3 mb-0 lh-sm">Held payment: {{ UAI.sum_to_pay }}</p>
+        <p class="d-block pb-3 mb-0 lh-sm">Held payment: {{ UAI.sum_to_pay|stringformat:".2f" }}</p>
     {% endif %}
     </div>
     {% for child in children %}
@@ -24,10 +24,10 @@
                     <div>
                         <form action="/child/{{ child.id }}/delete/" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-outline-danger mt-3 mb-3">Delete</button>
+                            <button type="submit" class="btn btn-outline-danger mt-3 w-100">Delete</button>
                         </form>
-                        <a class="btn btn-outline-secondary mt-3 mb-3 w-100" href="/child/{{ child.id }}/payments/">View</a>
-                        <a class="btn btn-outline-secondary mt-3 mb-3 w-100" href="/child/{{ child.id }}/">Edit</a>
+                        <a class="btn btn-outline-secondary mt-3 mb-3 w-70" href="/child/{{ child.id }}/payments/">View</a>
+                        <a class="btn btn-outline-secondary mt-3 mb-3 w-70" href="/child/{{ child.id }}/">Edit</a>
                     </div>
                 {% endif %}
             </div>
