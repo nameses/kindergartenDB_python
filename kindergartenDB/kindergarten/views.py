@@ -336,9 +336,18 @@ def add_month(request):
             )
 
         form_data = form.cleaned_data
-
+        month = form_data['month']
+        year = form_data['year']
+        if models.Month.objects.filter(month=month, year=year).exists():
+            return render(
+                request,
+                'kindergarten/month.html',
+                {
+                    'form': form,
+                    'error': 'Month already exists.'
+                }
+            )
         Month(**form_data).save()
-
         return HttpResponseRedirect('/months/')
 
     form = MonthForm()
