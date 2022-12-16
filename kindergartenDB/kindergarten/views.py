@@ -4,7 +4,6 @@ from django.shortcuts import render, get_object_or_404
 from authorization import decorators
 from . import models
 from .forms import KindergartenForm, KindergartenGroupForm, ChildForm, AttendanceForm, MonthForm
-from .models import Kindergarten, KindergartenGroup, Child, Attendance, Month
 
 
 def index(request):
@@ -51,7 +50,7 @@ def add_kindergarten(request):
 
         form_data = form.cleaned_data
 
-        Kindergarten(**form_data).save()
+        models.Kindergarten(**form_data).save()
 
         return HttpResponseRedirect('/kindergartens/')
 
@@ -68,7 +67,7 @@ def add_kindergarten(request):
 
 @decorators.staff_only
 def kindergarten_view(request, kindergarten_id):
-    kindergarten = get_object_or_404(Kindergarten, id=kindergarten_id)
+    kindergarten = get_object_or_404(models.Kindergarten, id=kindergarten_id)
 
     if request.method == 'POST':
         form = KindergartenForm(request.POST)
@@ -107,7 +106,7 @@ def kindergarten_view(request, kindergarten_id):
 
 @decorators.staff_only
 def kindergarten_list_payments(request, kindergarten_id):
-    kindergarten = get_object_or_404(Kindergarten, id=kindergarten_id)
+    kindergarten = get_object_or_404(models.Kindergarten, id=kindergarten_id)
 
     return render(
         request,
@@ -154,7 +153,7 @@ def add_group(request):
 
         form_data = form.cleaned_data
 
-        KindergartenGroup(**form_data).save()
+        models.KindergartenGroup(**form_data).save()
 
         return HttpResponseRedirect('/groups/')
 
@@ -171,7 +170,7 @@ def add_group(request):
 
 @decorators.staff_only
 def group_view(request, group_id=None):
-    group = get_object_or_404(KindergartenGroup, id=group_id)
+    group = get_object_or_404(models.KindergartenGroup, id=group_id)
 
     if request.method == 'POST':
         form = KindergartenGroupForm(request.POST)
@@ -229,7 +228,7 @@ def delete_child(request, group_id, child_id):
 @decorators.post_method_only
 @decorators.authenticated_only
 def parent_delete_child(request, child_id):
-    if (child := get_object_or_404(Child, id=child_id)).parent == request.user:
+    if (child := get_object_or_404(models.Child, id=child_id)).parent == request.user:
         child.delete()
     return HttpResponseRedirect('/profile/')
 
@@ -251,7 +250,7 @@ def parent_add_child(request):
 
         form_data = form.cleaned_data
 
-        child = Child(**form_data)
+        child = models.Child(**form_data)
         child.parent = request.user
         child.save()
 
@@ -270,7 +269,7 @@ def parent_add_child(request):
 
 @decorators.staff_only
 def child_view(request, child_id=None):
-    child = get_object_or_404(Child, id=child_id)
+    child = get_object_or_404(models.Child, id=child_id)
 
     if request.method == 'POST':
         form = ChildForm(request.POST)
@@ -328,7 +327,7 @@ def month_list(request):
         request,
         'kindergarten/month_list.html',
         {
-            'months': Month.objects.all()
+            'months': models.Month.objects.all()
         }
     )
 
@@ -360,7 +359,7 @@ def add_month(request):
                     'error': 'Month already exists.'
                 }
             )
-        Month(**form_data).save()
+        models.Month(**form_data).save()
         return HttpResponseRedirect('/months/')
 
     form = MonthForm()
@@ -376,7 +375,7 @@ def add_month(request):
 
 @decorators.staff_only
 def month_view(request, month_id=None):
-    month = get_object_or_404(Month, id=month_id)
+    month = get_object_or_404(models.Month, id=month_id)
 
     if request.method == 'POST':
         form = MonthForm(request.POST)
@@ -416,7 +415,7 @@ def month_view(request, month_id=None):
 @decorators.post_method_only
 @decorators.staff_only
 def delete_month(request, month_id):
-    month = get_object_or_404(Month, id=month_id)
+    month = get_object_or_404(models.Month, id=month_id)
     month.delete()
     return HttpResponseRedirect('/months/')
 
@@ -438,9 +437,9 @@ def child_add_payment(request, child_id):
 
         form_data = form.cleaned_data
 
-        child = get_object_or_404(Child, id=child_id)
+        child = get_object_or_404(models.Child, id=child_id)
 
-        if Attendance.objects.filter(child=child, month=form_data['month']).exists():
+        if models.Attendance.objects.filter(child=child, month=form_data['month']).exists():
             return render(
                 request,
                 'kindergarten/add_payment.html',
@@ -460,7 +459,7 @@ def child_add_payment(request, child_id):
                 }
             )
 
-        Attendance(
+        models.Attendance(
             child=child,
             month=form_data['month'],
             days_attended=form_data['days_attended']
@@ -482,7 +481,7 @@ def child_add_payment(request, child_id):
 @decorators.post_method_only
 @decorators.authenticated_only
 def child_pay(request, payment_id):
-    payment = get_object_or_404(Attendance, id=payment_id)
+    payment = get_object_or_404(models.Attendance, id=payment_id)
     if payment.child.parent == request.user:
         payment.is_paid = 1
         payment.save()
