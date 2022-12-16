@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 
-from authorization.models import UserAdditionInfo
+from kindergarten.models import UserAdditionInfo
 from .decorators import authenticated_only
 from .forms import SignUpForm, LoginForm
 from kindergarten.models import Child
