@@ -38,6 +38,27 @@ class Kindergarten(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def final_sums(self):
+        return (
+            (
+                month,
+                sum((
+                    attendance.final_sum
+                    for group in KindergartenGroup.objects.filter(kindergarten=self)
+                    for child in Child.objects.filter(group=group)
+                    for attendance in Attendance.objects.filter(child=child, is_paid=True)
+                )),
+                sum((
+                    attendance.final_sum
+                    for group in KindergartenGroup.objects.filter(kindergarten=self)
+                    for child in Child.objects.filter(group=group)
+                    for attendance in Attendance.objects.filter(child=child, is_paid=False)
+                )),
+            )
+            for month in Month.objects.all()
+        )
+
 
 class KindergartenGroup(models.Model):
     kindergarten = models.ForeignKey(Kindergarten, on_delete=models.CASCADE)

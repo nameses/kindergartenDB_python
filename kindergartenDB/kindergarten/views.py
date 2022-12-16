@@ -106,8 +106,16 @@ def kindergarten_view(request, kindergarten_id):
 
 
 @decorators.staff_only
-def kindergarten_list_payments(request):
-    pass
+def kindergarten_list_payments(request, kindergarten_id):
+    kindergarten = get_object_or_404(Kindergarten, id=kindergarten_id)
+
+    return render(
+        request,
+        'kindergarten/kindergarten_list_payments.html',
+        {
+            'kindergarten': kindergarten,
+        }
+    )
 
 
 def group_list(request):
