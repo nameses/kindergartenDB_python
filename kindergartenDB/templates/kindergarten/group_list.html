@@ -34,9 +34,9 @@
                     <div>
                         <form action="/group/{{ group.id }}/delete/" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-outline-danger mt-3 mb-3">Delete</button>
+                            <button type="submit" class="btn btn-outline-danger mb-1">Delete</button>
                         </form>
-                        <a class="btn btn-outline-secondary mt-3 mb-3 w-100" href="/group/{{ group.id }}/">Edit</a>
+                        <a class="btn btn-outline-secondary mt-3 w-100" href="/group/{{ group.id }}/">Edit</a>
                     </div>
                 {% endif %}
             </div>

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Children by group list{% endblock %}
+
+{% block content %}
+    <div class="border-bottom">
+        <strong class="text-dark h4 d-block pb-3 mb-0">{{ group }}</strong>
+{#        choose month#}
+    </div>
+    {% for child in children %}
+        <div class="border-bottom d-flex justify-content-between">
+            <strong class="text-dark h4 d-block pb-3 mb-0">{{ child }}</strong>
+{#            write days attended in this month in one row#}
+        </div>
+    {% endfor %}
+{% endblock %}

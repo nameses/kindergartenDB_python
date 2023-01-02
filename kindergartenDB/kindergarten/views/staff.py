@@ -391,3 +391,61 @@ def child_add_payment(request, child_id):
             'form': form
         }
     )
+
+
+@decorators.staff_only
+def child_add_payment_multiple(request, child_id):
+    if request.method == 'POST':
+        form = forms.AttendanceForm(request.POST)
+
+        if not form.is_valid():
+            return render(
+                request,
+                'kindergarten/add_payment.html',
+                {
+                    'form': form,
+                    'error': 'Invalid form'
+                }
+            )
+
+        form_data = form.cleaned_data
+
+        child = get_object_or_404(models.Child, id=child_id)
+
+        if models.Attendance.objects.filter(child=child, month=form_data['month']).exists():
+            return render(
+                request,
+                'kindergarten/add_payment.html',
+                {
+                    'form': form,
+                    'error': 'Attendance to this month already exists'
+                }
+            )
+
+        if form_data['month'].work_day_count < form_data['days_attended']:
+            return render(
+                request,
+                'kindergarten/add_payment.html',
+                {
+                    'form': form,
+                    'error': 'Attended days more than work day count'
+                }
+            )
+
+        models.Attendance(
+            child=child,
+            month=form_data['month'],
+            days_attended=form_data['days_attended']
+        ).save()
+
+        return HttpResponseRedirect(f'/group/{child.group.id}/children/')
+
+    form = forms.AttendanceForm()
+
+    return render(
+        request,
+        'kindergarten/add_payment.html',
+        {
+            'form': form
+        }
+    )

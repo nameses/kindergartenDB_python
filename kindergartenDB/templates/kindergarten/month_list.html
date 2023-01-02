@@ -12,8 +12,6 @@
     </div>
     {% for month in months %}
         <div class="d-flex text-muted pt-3">
-
-
             <div class="pb-3 mb-0 small lh-sm border-bottom w-100 d-flex justify-content-between">
                 <div>
                     <strong class="text-dark h4 d-block pb-3 mb-0">{{ month }}</strong>
@@ -23,10 +21,9 @@
                     <div>
                         <form action="/month/{{ month.id }}/delete/" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-outline-danger mt-3 mb-3">Delete</button>
+                            <button type="submit" class="btn btn-outline-danger mb-1">Delete</button>
                         </form>
-                        <a class="btn btn-outline-secondary mt-3 mb-3 w-100" href="/month/{{ month.id }}/">Edit</a>
-
+                        <a class="btn btn-outline-secondary mt-1 w-100" href="/month/{{ month.id }}/">Edit</a>
                     </div>
                 {% endif %}
             </div>

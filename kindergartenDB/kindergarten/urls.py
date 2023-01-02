@@ -13,6 +13,7 @@ urlpatterns = [
 
     path('child/<int:child_id>/', views.staff.child_view),
     path('child/<int:child_id>/add_payment/', views.staff.child_add_payment),
+    path('child/<int:child_id>/add_payment/multiple/', views.staff.child_add_payment_multiple),
 
     path('kindergartens/', views.user.kindergarten_list),
 
