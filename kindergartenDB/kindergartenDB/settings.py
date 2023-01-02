@@ -75,9 +75,17 @@ WSGI_APPLICATION = 'kindergartenDB.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'Kindergarten',
+        'USER': 'root',
+        'PASSWORD': '578320',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
         'OPTIONS': {
-            'read_default_file': 'db.conf',
-        },
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        }
+        # 'OPTIONS': {
+        #     'read_default_file': 'db.conf',
+        # },
     }
 }
 

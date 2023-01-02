@@ -16,7 +16,7 @@
             <div class="pb-3 mb-0 small lh-sm border-bottom w-100 d-flex justify-content-between">
                 <div class="">
                     <strong class="text-dark h4 d-block pb-3 mb-0">{{ child }}</strong>
-                    <p class="d-block pb-3 mb-0 lh-sm">Birthday: {{ child }}</p>
+                    <p class="d-block pb-3 mb-0 lh-sm">Birthday: {{ child.birthday.date }}</p>
                     <a class="d-block pb-3 mb-0 lh-sm"
                        href="/profile/{{ child.parent.id }}">Parent: {{ child.get_parent_name }}: </a>
                 </div>

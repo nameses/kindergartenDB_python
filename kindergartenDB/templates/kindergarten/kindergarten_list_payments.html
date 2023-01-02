@@ -11,14 +11,12 @@
         <strong class="text-dark h4 d-block p-3 mb-0">{{ kindergarten }}</strong>
     </div>
     {% for month, paid, held in kindergarten.final_sums %}
-        <div class="d-flex text-muted pt-3">
-
-
-            <div class="pb-3 mb-0 small lh-sm border-bottom w-100 d-flex justify-content-between">
-                <div>
-                    <strong class="text-dark h4 d-block pb-3 mb-0">{{ month }}</strong>
-                    <p class="d-block pb-3 mb-0 lh-sm">Paid: {{ paid }}</p>
-                    <p class="d-block pb-3 mb-0 lh-sm">Held: {{ held }}</p>
+        <div class="row text-muted">
+            <div class="border-bottom w-100justify-content-between">
+                <div class="d-flex h4">
+                    <strong class="col text-dark d-block pb-3 mb-0">{{ month }}   </strong>
+                    <p class="col d-block pb-3 mb-0 lh-sm">Paid: {{ paid|stringformat:".2f" }}</p>
+                    <p class="col d-block pb-3 mb-0 lh-sm">Held: {{ held|stringformat:".2f" }}</p>
                 </div>
             </div>
         </div>

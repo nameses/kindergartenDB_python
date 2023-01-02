@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 
-from authorization.models import UserAdditionInfo
+from kindergarten.models import UserAdditionInfo
 
 user = User.objects.create_user(
     username='root',

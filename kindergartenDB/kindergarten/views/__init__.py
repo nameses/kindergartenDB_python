@@ -1,2 +1,2 @@
-import user
-import staff
+from . import user
+from . import staff
