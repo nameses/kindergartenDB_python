@@ -4,7 +4,7 @@
 
 {% block content %}
     <div class="d-flex text-muted pb-3 pl-5 bd-example">
-        <a class="btn btn-secondary m-1" href=f"/group/{{ group.id }}/children">Back</a>
+        <a class="btn btn-secondary m-1" href="/group/{{ group.id }}/children">Back</a>
     </div>
     <div class="pb-3 pl-5 border-bottom bd-example">
         <h3>Group: {{ group }}</h3>
@@ -24,10 +24,10 @@
             <tr>
                 <td>{{ child }}</td>
                 <td>{{ attendance.days_attended }}</td>
-                <td>{{ attendance.final_sum }}</td>
+                <td>{{ attendance.final_sum|stringformat:".2f" }}</td>
                 <td>
                     <a class="btn btn-outline-secondary w-100"
-                       href="/child/{{ child.id }}/add_payment/">Change payment</a>
+                       href="/child/{{ child.id }}/edit_payment/month/{{ month.id }}">Change payment</a>
                 </td>
             </tr>
         {% endfor %}

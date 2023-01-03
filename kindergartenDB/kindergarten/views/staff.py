@@ -394,6 +394,61 @@ def child_add_payment(request, child_id):
 
 
 @decorators.staff_only
+def child_edit_payment(request, child_id, month_id):
+    payment = get_object_or_404(models.Attendance,
+                                child_id=child_id,
+                                month_id=month_id)
+
+    if request.method == 'POST':
+        form = forms.AttendanceForm(request.POST)
+
+        if not form.is_valid():
+            return render(
+                request,
+                'kindergarten/edit_payment.html',
+                {
+                    'form': form,
+                    'error': 'Invalid form'
+                }
+            )
+
+        form_data = form.cleaned_data
+
+        child = get_object_or_404(models.Child, id=child_id)
+
+        if form_data['month'].work_day_count < form_data['days_attended']:
+            return render(
+                request,
+                'kindergarten/edit_payment.html',
+                {
+                    'form': form,
+                    'error': 'Attended days more than work day count'
+                }
+            )
+
+        get_object_or_404(models.Attendance, child=child, month=form_data['month']) \
+            .delete()
+
+        models.Attendance(
+            child=child,
+            month=form_data['month'],
+            days_attended=form_data['days_attended']
+        ).save()
+
+        return HttpResponseRedirect(f'/group/{child.group.id}/children/month/{month_id}/')
+
+    form = forms.AttendanceForm(instance=payment)
+
+    return render(
+        request,
+        'kindergarten/edit_payment.html',
+        {
+            'form': form
+        }
+    )
+
+
+@decorators.staff_only
 def child_add_payment_multiple(request, group_id):
     if request.method == 'POST':
         form = forms.AttendanceMonthForm(request.POST)
@@ -413,26 +468,65 @@ def child_add_payment_multiple(request, group_id):
         group = get_object_or_404(models.KindergartenGroup, id=group_id)
         children = models.Child.objects.filter(group=group)
 
-        for child in children:
-            if models.Attendance.objects.filter(child=child, month=form_data['month']).exists():
-                return render(
-                    request,
-                    'kindergarten/add_multiple_payments.html',
-                    {
-                        'form': form,
-                        'error': 'Attendance to this month already exists'
-                    }
-                )
-
         days_attended = form_data['month'].work_day_count
         month = form_data['month']
         for child in children:
-            models.Attendance(
-                child=child,
-                month=month,
-                days_attended=days_attended
-            ).save()
+            if not models.Attendance.objects.filter(child=child, month=month).exists():
+                models.Attendance(
+                    child=child,
+                    month=month,
+                    days_attended=days_attended
+                ).save()
 
+        return HttpResponseRedirect(f'/group/{group_id}/children/month/{month.id}/')
+
+    form = forms.AttendanceMonthForm()
+
+    return render(
+        request,
+        'kindergarten/add_multiple_payments.html',
+        {
+            'form': form
+        }
+    )
+
+
+@decorators.staff_only
+def child_show_payment_multiple(request, group_id):
+    if request.method == 'POST':
+        form = forms.AttendanceMonthForm(request.POST)
+
+        if not form.is_valid():
+            return render(
+                request,
+                'kindergarten/add_multiple_payments.html',
+                {
+                    'form': form,
+                    'error': 'Invalid form'
+                }
+            )
+
+        form_data = form.cleaned_data
+
+        group = get_object_or_404(models.KindergartenGroup, id=group_id)
+        children = models.Child.objects.filter(group=group)
+
+        ifAllExists = True
+        for child in children:
+            if not models.Attendance.objects.filter(child=child, month=form_data['month']).exists():
+                ifAllExists = False
+
+        if not ifAllExists:
+            return render(
+                request,
+                'kindergarten/add_multiple_payments.html',
+                {
+                    'form': form,
+                    'error': 'Not all children have payments!'
+                }
+            )
+
+        month = form_data['month']
         return HttpResponseRedirect(f'/group/{group_id}/children/month/{month.id}/')
 
     form = forms.AttendanceMonthForm()
