@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Children list{% endblock %}
+
+{% block content %}
+    <div class="d-flex text-muted pb-3 pl-5 bd-example">
+        <a class="btn btn-secondary m-1" href=f"/group/{{ group.id }}/children">Back</a>
+    </div>
+    <div class="pb-3 pl-5 border-bottom bd-example">
+        <h3>Group: {{ group }}</h3>
+        <h4>Payments for {{ month }}</h4>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Full name</th>
+            <th>Days attended</th>
+            <th>Final Sum</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for child,attendance in child_to_attendance.items %}
+            <tr>
+                <td>{{ child }}</td>
+                <td>{{ attendance.days_attended }}</td>
+                <td>{{ attendance.final_sum }}</td>
+                <td>
+                    <a class="btn btn-outline-secondary w-100"
+                       href="/child/{{ child.id }}/add_payment/">Change payment</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+{% endblock %}

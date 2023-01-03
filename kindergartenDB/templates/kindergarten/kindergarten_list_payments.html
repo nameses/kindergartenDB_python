@@ -12,7 +12,7 @@
     </div>
     {% for month, paid, held in kindergarten.final_sums %}
         <div class="row text-muted">
-            <div class="border-bottom w-100justify-content-between">
+            <div class="border-bottom w-100 justify-content-between">
                 <div class="d-flex h4">
                     <strong class="col text-dark d-block pb-3 mb-0">{{ month }}   </strong>
                     <p class="col d-block pb-3 mb-0 lh-sm">Paid: {{ paid|stringformat:".2f" }}</p>

@@ -13,7 +13,6 @@ urlpatterns = [
 
     path('child/<int:child_id>/', views.staff.child_view),
     path('child/<int:child_id>/add_payment/', views.staff.child_add_payment),
-    path('child/<int:child_id>/add_payment/multiple/', views.staff.child_add_payment_multiple),
 
     path('kindergartens/', views.user.kindergarten_list),
 
@@ -28,6 +27,8 @@ urlpatterns = [
     path('group/<int:group_id>/', views.staff.group_view),
     path('group/<int:group_id>/delete/', views.staff.delete_group),
     path('group/<int:group_id>/children/', views.staff.children_by_group_list),
+    path('group/<int:group_id>/children/month/<int:month_id>/', views.staff.children_by_group_by_month_list),
+    path('group/<int:group_id>/children/add_payment/', views.staff.child_add_payment_multiple),
     path('group/<int:group_id>/children/<int:child_id>/delete/', views.staff.delete_child),
 
     path('months/', views.staff.month_list),

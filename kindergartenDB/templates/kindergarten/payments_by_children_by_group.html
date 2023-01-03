@@ -5,12 +5,22 @@
 {% block content %}
     <div class="border-bottom">
         <strong class="text-dark h4 d-block pb-3 mb-0">{{ group }}</strong>
-{#        choose month#}
+        {#        choose month#}
+        <h2>{% block form_name %}{% endblock %}</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            {% if error %}
+                <div class="p-3 mb-2 bg-danger text-white">{{ error }}</div>
+            {% endif %}
+            {% block additional_button %}{% endblock %}
+            <button class="btn btn-lg btn-primary" type="submit">{% block button_text %}{% endblock %}</button>
+        </form>
     </div>
     {% for child in children %}
         <div class="border-bottom d-flex justify-content-between">
             <strong class="text-dark h4 d-block pb-3 mb-0">{{ child }}</strong>
-{#            write days attended in this month in one row#}
+            {#            write days attended in this month in one row#}
         </div>
     {% endfor %}
 {% endblock %}
