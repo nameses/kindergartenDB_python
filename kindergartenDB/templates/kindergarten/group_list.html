@@ -17,19 +17,19 @@
 
 
             <div class="pb-3 mb-0 small lh-sm border-bottom w-100 d-flex justify-content-between">
-            {% if request.user.is_staff %}
-                <a href="/group/{{ group.id }}/children/" style="text-decoration: none; color:black">
-                    <strong class="text-dark h4 d-block pb-3 mb-0">{{ group }}</strong>
-                    <p class="d-block pb-3 mb-0 lh-sm">Kindergarten Name: {{ group.kindergarten_name }}</p>
-                    <p class="d-block pb-3 mb-0 lh-sm">Children count: {{ group.children_count }}</p>
-                </a>
-            {% else %}
-                <div>
-                    <strong class="text-dark h4 d-block pb-3 mb-0">{{ group }}</strong>
-                    <p class="d-block pb-3 mb-0 lh-sm">Kindergarten Name: {{ group.kindergarten_name }}</p>
-                    <p class="d-block pb-3 mb-0 lh-sm">Children count: {{ group.children_count }}</p>
-                </div>
-            {% endif %}
+                {% if request.user.is_staff %}
+                    <a href="/group/{{ group.id }}/children/" style="text-decoration: none; color:black">
+                        <strong class="text-dark h4 d-block pb-3 mb-0">{{ group }}</strong>
+                        <p class="d-block pb-3 mb-0 lh-sm">Kindergarten Name: {{ group.kindergarten_name }}</p>
+                        <p class="d-block pb-3 mb-0 lh-sm">Children count: {{ group.children_count }}</p>
+                    </a>
+                {% else %}
+                    <div>
+                        <strong class="text-dark h4 d-block pb-3 mb-0">{{ group }}</strong>
+                        <p class="d-block pb-3 mb-0 lh-sm">Kindergarten Name: {{ group.kindergarten_name }}</p>
+                        <p class="d-block pb-3 mb-0 lh-sm">Children count: {{ group.children_count }}</p>
+                    </div>
+                {% endif %}
                 {% if request.user.is_staff %}
                     <div>
                         <form action="/group/{{ group.id }}/delete/" method="post">

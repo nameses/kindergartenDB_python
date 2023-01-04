@@ -24,7 +24,11 @@
             <tr>
                 <td>{{ month }}</td>
                 <td>{{ paid|stringformat:".2f" }}</td>
-                <td>{{ held|stringformat:".2f" }}</td>
+                <td class="d-flex justify-content-between">
+                    <p class="d-block">{{ held|stringformat:".2f" }}</p>
+                    <a class="btn btn-outline-secondary"
+                       href="/kindergarten/{{ kindergarten.id }}/payments/month/{{ month.id }}">Show</a>
+                </td>
             </tr>
         {% endfor %}
         </tbody>

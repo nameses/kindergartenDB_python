@@ -99,6 +99,26 @@ def kindergarten_list_payments(request, kindergarten_id):
     )
 
 
+@decorators.staff_only
+def payments_by_kindergarten_month(request, kindergarten_id, month_id):
+    kindergarten = get_object_or_404(models.Kindergarten, id=kindergarten_id)
+    groups = models.KindergartenGroup.objects.filter(kindergarten_id=kindergarten_id)
+    children = models.Child.objects.filter(group__in=groups)
+    child_to_attendance = {}
+    for child in children:
+        if models.Attendance.objects.filter(child=child, month_id=month_id, is_paid=False).exists():
+            child_to_attendance[child] = models.Attendance.objects.get(child=child, month_id=month_id, is_paid=False)
+    return render(
+        request,
+        'kindergarten/payments_by_children_kindergarten_month_list.html',
+        {
+            'kindergarten': kindergarten,
+            'child_to_attendance': child_to_attendance,
+            'month': get_object_or_404(models.Month, id=month_id)
+        }
+    )
+
+
 @decorators.post_method_only
 @decorators.staff_only
 def delete_group(request, group_id):
@@ -394,7 +414,7 @@ def child_add_payment(request, child_id):
 
 
 @decorators.staff_only
-def child_edit_payment(request, child_id, month_id):
+def child_edit_payment_group(request, child_id, month_id):
     payment = get_object_or_404(models.Attendance,
                                 child_id=child_id,
                                 month_id=month_id)
@@ -436,6 +456,61 @@ def child_edit_payment(request, child_id, month_id):
         ).save()
 
         return HttpResponseRedirect(f'/group/{child.group.id}/children/month/{month_id}/')
+
+    form = forms.AttendanceForm(instance=payment)
+
+    return render(
+        request,
+        'kindergarten/edit_payment.html',
+        {
+            'form': form
+        }
+    )
+
+
+@decorators.staff_only
+def child_edit_payment_kindergarten(request, child_id, month_id):
+    payment = get_object_or_404(models.Attendance,
+                                child_id=child_id,
+                                month_id=month_id)
+
+    if request.method == 'POST':
+        form = forms.AttendanceForm(request.POST)
+
+        if not form.is_valid():
+            return render(
+                request,
+                'kindergarten/edit_payment.html',
+                {
+                    'form': form,
+                    'error': 'Invalid form'
+                }
+            )
+
+        form_data = form.cleaned_data
+
+        child = get_object_or_404(models.Child, id=child_id)
+
+        if form_data['month'].work_day_count < form_data['days_attended']:
+            return render(
+                request,
+                'kindergarten/edit_payment.html',
+                {
+                    'form': form,
+                    'error': 'Attended days more than work day count'
+                }
+            )
+
+        get_object_or_404(models.Attendance, child=child, month=form_data['month']) \
+            .delete()
+
+        models.Attendance(
+            child=child,
+            month=form_data['month'],
+            days_attended=form_data['days_attended']
+        ).save()
+
+        return HttpResponseRedirect(f'/kindergarten/{child.group.kindergarten.id}/payments/month/{month_id}')
 
     form = forms.AttendanceForm(instance=payment)
 

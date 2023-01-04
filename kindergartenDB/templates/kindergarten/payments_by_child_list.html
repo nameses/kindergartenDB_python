@@ -8,29 +8,35 @@
         <p class="d-block pb-3 mb-0 lh-sm">Birthday: {{ child.birthday }}</p>
         <p class="d-block pb-3 mb-0 lh-sm">Group: {{ child.group }}</p>
     </div>
-    {% for payment in payments %}
-        <div class="d-flex text-muted pt-3">
-            <div class="pb-3 mb-0 small lh-sm border-bottom w-100 d-flex justify-content-between">
-                <div class="">
-                    <strong class="text-dark h4 d-block pb-3 mb-0">{{ payment.month }}</strong>
-                    <p class="d-block pb-3 mb-0 lh-sm">Days attended: {{ payment.days_attended }}</p>
-                    <p class="d-block pb-3 mb-0 lh-sm">Final Sum: {{ payment.final_sum|stringformat:".2f" }}</p>
-                </div>
-                <div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Month</th>
+            <th>Days attended</th>
+            <th>Final Sum</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for payment in payments %}
+            <tr>
+                <td>{{ payment.month }}</td>
+                <td>{{ payment.days_attended }}</td>
+                <td>{{ payment.final_sum|stringformat:".2f" }}</td>
+                <td>
                     {% if not payment.is_paid %}
                         <form action="/payment/{{ payment.id }}/pay/" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-outline-danger mt-3 mb-3">Pay
+                            <button type="submit" class="btn btn-outline-danger">Pay
                             </button>
                         </form>
                     {% else %}
-                        <button class="btn btn-outline-secondary mt-3 mb-3" disabled>Paid
+                        <button class="btn btn-outline-secondary" disabled>Paid
                         </button>
                     {% endif %}
-                </div>
-            </div>
-        </div>
-
-    {% endfor %}
-
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

@@ -7,7 +7,7 @@
         <a class="btn btn-secondary m-1" href="/group/{{ group.id }}/children">Back</a>
     </div>
     <div class="pb-3 pl-5 border-bottom bd-example">
-        <h3>Group: {{ group }}</h3>
+        <h3>Kindergarten: {{ kindergarten }}</h3>
         <h4>Payments for {{ month }}</h4>
         <h4>Work days: {{ month.work_day_count }}</h4>
     </div>
@@ -15,9 +15,9 @@
         <thead>
         <tr>
             <th>Full name</th>
+            <th>Group</th>
             <th>Days attended</th>
             <th>Final Sum</th>
-            <th>Is Paid</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -25,23 +25,12 @@
         {% for child,attendance in child_to_attendance.items %}
             <tr>
                 <td>{{ child }}</td>
+                <td>{{ child.group }}</td>
                 <td>{{ attendance.days_attended }}</td>
                 <td>{{ attendance.final_sum|stringformat:".2f" }}</td>
                 <td>
-                    {% if attendance.is_paid %}
-                        Yes
-                    {% else %}
-                        No
-                    {% endif %}
-                </td>
-                <td>
-                    {% if attendance.is_paid %}
-                        <a class="btn btn-outline-secondary w-100 disabled">Change payment</a>
-                    {% else %}
-                        <a class="btn btn-outline-secondary w-100"
-                           href="/child/{{ child.id }}/edit_payment/month/{{ month.id }}/group">Change payment</a>
-                    {% endif %}
-
+                    <a class="btn btn-outline-secondary w-100"
+                       href="/child/{{ child.id }}/edit_payment/month/{{ month.id }}/kindergarten">Change payment</a>
                 </td>
             </tr>
         {% endfor %}
